@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "Cringe Meter",
+  "version": "0.4.0",
+  "description": "A live thermometer for how cringe your LinkedIn post or tweet draft is. Scored locally by a fine-tuned Laya model. Your text never leaves your machine.",
+  "host_permissions": [
+    "http://127.0.0.1:8780/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.linkedin.com/*",
+        "https://x.com/*",
+        "https://twitter.com/*"
+      ],
+      "js": [
+        "meter.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  }
+}

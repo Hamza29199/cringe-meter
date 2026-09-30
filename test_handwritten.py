@@ -1,0 +1,100 @@
+"""Hand-written test posts, deliberately in a different voice from the generator's templates:
+longer, messier, more natural, plus borderline cases (sincere gratitude, a plain hiring post, a real
+anecdote that is NOT a parable). Written by the same author as the generator, so it is only a
+partly independent test. Real posts are the real test."""
+G, H, F, E, U, B, S, A = ("genuine", "humblebrag", "fake_parable", "engagement_bait", "hustle_guru",
+                          "buzzword_salad", "shameless_plug", "ai_thread_bro")
+TEST = [
+    # ---- genuine (incl. borderline gratitude / hiring / anecdotes that are NOT parables)
+    ("We migrated our billing service from cron jobs to a proper queue last quarter. Retries dropped failed invoices from 4% to 0.3%. The migration itself was boring, which is the point. Notes on what we'd do differently in the doc.", G),
+    ("Thank you to the eleven people who stayed until 9pm on Thursday to get the release out. I know that was not in anyone's plan. Pizza is on me Monday.", G),
+    ("I'm hiring a backend engineer (Go or Rust, either is fine) for the payments team. Remote in EU time zones, €70-90k, four-day week. Job description and salary range are in the link. No recruiters please.", G),
+    ("My first year as a manager, in one paragraph: I talked too much in 1:1s, I avoided giving hard feedback for months, and my team was better than I gave them credit for. I've started writing down what I want to say before the meeting. It helps.", G),
+    ("Does anyone have experience with Postgres logical replication across major versions? We have a 2TB database and I'm nervous about the cutover window. Any horror stories welcome.", G),
+    ("Last week a customer told me our export button was 'hiding' because it was grey. We changed the colour. Support tickets on that page dropped by a third. Sometimes the fix is embarrassingly small.", G),
+    ("Congrats to Priya on defending her thesis today. Four years, three supervisors, one pandemic. Very proud of you.", G),
+    ("After six years I'm leaving the company. It's been the best job of my career. Next Monday I start at a smaller team working on grid software. I'll miss the people the most.", G),
+    ("Small thing I learned this week: if your Kubernetes readiness probe shares a code path with your health page, a slow database can take down your whole deployment. We split them. Boring fix, big win.", G),
+    ("Looking for a design role in healthcare. 5 years in product design, mostly patient-facing apps. Portfolio in my profile. Happy to do a paid trial project.", G),
+    # ---- humblebrag
+    ("Humbled. Honestly speechless. This morning I found out I've been selected as one of 40 leaders to watch in 2026. I'm just a girl from a small town who loved spreadsheets. Thank you to my amazing team who make me look good.", H),
+    ("Not to make this about me, but I just closed my biggest deal ever. $2.4M. I'm so grateful to my clients, my mentors, and my incredible manager. Feeling blessed beyond measure.", H),
+    ("I try to keep my personal life off this platform, but today I'm making an exception: I was invited to keynote at a conference of 8,000 people. Deeply honored. Deeply humbled. Deeply grateful.", H),
+    ("So this happened. Our little side project got acquired. I still don't understand how a guy who failed maths twice ended up here. Life is strange. Grateful.", H),
+    ("After 12 years of showing up every single day, I'm thrilled to share that I've been promoted to Vice President. It's surreal. I'm not sure I deserve it, but I'll work harder than ever to earn it.", H),
+    ("A quick, humble update: my book just hit #1 in three categories. I wrote it at 4am in my car. I'm still in shock. Thank you for the love.", H),
+    ("Some news I'm incredibly proud (and humbled!) to share: I was named among the most influential voices in fintech this year. Never in my wildest dreams.", H),
+    ("Woke up to 400 messages congratulating me on the feature in a major magazine. I'm overwhelmed. I'm just doing what I love and telling the truth.", H),
+    ("I'm honoured to announce that I've been asked to join the board of two companies. Imposter syndrome is real, but I'm going to lean in.", H),
+    ("Big milestone today: 100K followers. I started this account with 12 followers (all family). Thank you for making this possible. I am humbled and grateful. 🙏", H),
+    # ---- fake parable
+    ("I was in line at Starbucks behind a man in a stained jacket. He ordered the cheapest thing on the menu and counted out coins. The barista said, 'You're short.' Before I could speak, the man behind us paid. I found out later he owned the chain. That's when I learned what real leadership is.", F),
+    ("My CEO called me into her office after I made a $50,000 mistake. I thought I was done. She said: 'Why would I fire you? I just spent $50,000 training you.' I've never forgotten that.", F),
+    ("An old man on the subway asked me to hold his coffee. I said no, I was busy. He smiled and said: 'The busiest people are the loneliest.' I went home and called my mother. Call yours.", F),
+    ("I hired a candidate who showed up 20 minutes late, soaked from the rain. My team thought I was crazy. She turned out to be the best hire I've ever made. Here's why I never judge by first impressions.", F),
+    ("A homeless man returned my lost wallet with every dollar still inside. I offered him a reward and he said: 'Keep it. Someone did the same for me.' I was in tears. Be the reason someone believes in people again.", F),
+    ("When I was 23, my boss made me clean the office bathroom before my first meeting. I was furious. Years later he told me it was a test, and I'd passed. He is now my business partner.", F),
+    ("My 5-year-old looked up from her drawing and asked, 'Daddy, why do you always look at your phone?' I put it down that day and never picked it up at dinner again. Sometimes kids are our best teachers.", F),
+    ("An intern I nearly sent home for a typo turned out to have written the code that saved our launch. Never underestimate anyone in the room.", F),
+    ("The janitor stayed late one night and fixed a bug in our presentation. We asked how he knew. 'I used to be a CTO,' he said. Silence. Stay humble.", F),
+    ("I asked a taxi driver in Mumbai what success meant to him. He pulled over, looked me in the eye and said something I will carry forever: 'Enough.' 🙏", F),
+    # ---- engagement bait
+    ("Controversial take: standups are a waste of time. Agree? Disagree? Tell me in the comments, I read every single one. 👇", E),
+    ("Comment 'AI' below and I'll send you my complete guide to prompt engineering. Must be connected so I can DM you! Like + repost to help others.", E),
+    ("What's a red flag on a résumé that you can't unsee? Let's hear it, recruiters! 😅", E),
+    ("Tag a colleague who always reads the email at 11:59pm. You know exactly who they are. 😂", E),
+    ("If you've ever pretended to be on mute when you weren't, drop a 🙋. Let's see how many of us there are.", E),
+    ("Poll: Do you prefer working from home or the office? Comment your answer and share this with your team so we can settle it once and for all.", E),
+    ("Reposting this in case someone in my network needs to hear it today. ♻️ Like if you agree.", E),
+    ("I bet 90% of people won't answer this. What's your biggest career regret? Be honest. I'll start in the comments.", E),
+    ("Type YES if you want me to share the template that got me 3 job offers. I'll DM the first 100. Repost so others can benefit too.", E),
+    ("Hot take: mondays are fine. Fight me in the comments. 🥊", E),
+    # ---- hustle guru
+    ("Your alarm clock is not your enemy. Your excuses are. I wake up at 4:30 every day, cold shower, no phone until noon. Nobody is coming to hand you a life. Get up and take it.", U),
+    ("They laughed when I said I'd be a millionaire by 30. I stopped replying to the ones who didn't matter and started replying to my calendar. Discipline over motivation, every day.", U),
+    ("Broke people have hobbies. Rich people have obsessions. Which one are you?", U),
+    ("You said you were tired. I heard: 'I want to stay average.' Sleep is for the finished. Get to work.", U),
+    ("The gym at 5am is quiet because winners are busy. Show up when nobody claps. That's where champions are made.", U),
+    ("If you're not uncomfortable, you're not growing. Cold showers. Cold emails. Cold coffee. Zero complaints.", U),
+    ("Everyone wants the result. Nobody wants the routine. The routine is the result.", U),
+    ("I worked 100-hour weeks for two years and I'd do it again. Balance is a myth invented by people who don't want to win.", U),
+    ("Stop asking for permission. Stop waiting for the perfect moment. There is no perfect moment. There is only now, and what you do with it.", U),
+    ("Your excuses have excuses. Every minute you waste is a minute someone else is using. Go.", U),
+    # ---- buzzword salad
+    ("We're thrilled to unveil our holistic, AI-powered synergy platform that empowers cross-functional stakeholders to leverage best-in-class digital transformation across the enterprise value chain.", B),
+    ("As a strategic thought leader, I'm passionate about driving scalable, customer-centric innovation at the intersection of people, process and technology. Let's ideate.", B),
+    ("Our agile, outcome-oriented framework unlocks synergistic growth by aligning stakeholder ecosystems with mission-critical KPIs. The future of work is now.", B),
+    ("Excited to join the team as Senior Associate of Strategic Enablement, where I'll be operationalising a best-in-class approach to end-to-end value realisation.", B),
+    ("It's time to disrupt the disruptors. By double-clicking on our core competencies, we're pivoting to a frictionless, insight-driven operating model.", B),
+    ("Leadership in the age of transformation means moving the needle, breaking silos and building bridges towards a purpose-driven, future-ready culture.", B),
+    ("Proud to share that our organisation has achieved best-in-class outcomes through hyper-personalised, omnichannel engagement solutions. Onwards to the next paradigm.", B),
+    ("Innovation is not a destination, it's a mindset. Empowering people to leverage their full potential within a dynamic, holistic ecosystem.", B),
+    ("Today I'm reflecting on what it means to lead with agility in a VUCA world, ensuring alignment across matrixed teams and synergising deliverables.", B),
+    ("Together we are re-imagining the future of engagement by harnessing scalable, data-driven insights to enable seamless, end-to-end transformation.", B),
+    # ---- shameless plug
+    ("🚨 Only 5 spots left for my LinkedIn Ghostwriting Accelerator. We'll turn your ideas into posts that get clients. Early bird pricing ends Friday. DM me 'GROW' to grab your seat.", S),
+    ("My new book is out now! Get your copy on Amazon (link in comments) and if you buy today you'll get my free workbook. Would mean the world to me.", S),
+    ("We're hiring! 🚀 Looking for rockstar sales reps to join our rapidly growing team. Uncapped commission, unlimited PTO, amazing culture. DM me to apply!", S),
+    ("Are you a founder tired of low-quality leads? My agency generates 40+ qualified appointments a month, guaranteed. Book a free call below.", S),
+    ("Excited to announce my new podcast! Episode 1 drops Monday. Subscribe now so you don't miss it, and share with a friend.", S),
+    ("Our SaaS is offering 60% off for the first 100 customers. Streamline your reporting in minutes. Start your free trial today, link in bio.", S),
+    ("Need a website that converts? We build sites in 7 days. Limited slots this month. Message me to get a quote.", S),
+    ("Join 15,000 founders reading my newsletter every Sunday. Free to subscribe, unsubscribe any time. Sign up at the link below.", S),
+    ("Selling my Notion templates bundle, 80 templates for $29. Lifetime updates included. Grab it before the price goes up.", S),
+    ("Recruiting for a Senior Account Executive at a hyper-growth company. Amazing perks, competitive salary, great culture. Message me for details!", S),
+    # ---- ai thread bro
+    ("AI is going to take your job by December. Here are the 7 tools you need to learn TODAY (save this): 1. ChatGPT 2. Claude 3. Perplexity 4. Gamma 5. Notion AI 6. Midjourney 7. Zapier. Follow for more.", A),
+    ("I gave ChatGPT one prompt and it built me a $10k/month business plan in 30 seconds. Here's the exact prompt (bookmark this):", A),
+    ("99% of people are using ChatGPT wrong. Here's the framework I use to get 10x better outputs. 🧵", A),
+    ("These 5 free AI tools will make you 10x more productive. Number 3 is insane.", A),
+    ("Prompt engineering is a superpower. I've used these 12 prompts to write 100 posts in one afternoon. Copy them below.", A),
+    ("ChatGPT just made copywriters obsolete. Here's how to use AI to write emails that get 80% open rates:", A),
+    ("The AI agents are coming for your job. Here's a thread on how to prepare, tool by tool. Retweet if you found this useful.", A),
+    ("I automated my entire workflow with AI. Save 20 hours a week with this exact stack. Here's how (no code):", A),
+    ("Stop paying for Photoshop. Here are 6 AI tools that do it for free. A thread 🧵👇", A),
+    ("If you're not using AI to write your LinkedIn posts, you're already behind. Here's the prompt I use to go viral:", A),
+]
+
+if __name__ == "__main__":
+    import collections
+    print(len(TEST), dict(collections.Counter(l for _, l in TEST)))

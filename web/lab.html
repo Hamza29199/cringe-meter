@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cringe Lab</title>
+<style>
+  :root { --bg: #0b0e14; --ink: #e8ecf3; --mut: #8b93a7; --line: rgba(255,255,255,.10); }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; color: var(--ink); background: radial-gradient(1200px 600px at 10% -10%, #1b2440 0%, transparent 60%), radial-gradient(900px 500px at 100% 0%, #2a1730 0%, transparent 55%), var(--bg);
+         font: 400 15px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 1040px; margin: 0 auto; padding: 28px 20px 60px; }
+  h1 { margin: 0; font-size: 30px; letter-spacing: -.5px; }
+  .sub { margin: 4px 0 22px; color: var(--mut); }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 24px; align-items: start; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .editor { position: relative; border-radius: 16px; border: 1px solid var(--line); background: rgba(255,255,255,.03); }
+  .editor:focus-within { border-color: rgba(125,180,255,.55); box-shadow: 0 0 0 3px rgba(125,180,255,.12); }
+  .mirror, textarea { margin: 0; padding: 18px 20px; width: 100%; height: 320px; font: 400 16px/1.55 -apple-system, "Segoe UI", Roboto, sans-serif; letter-spacing: 0; border: 0; white-space: pre-wrap; word-wrap: break-word; overflow: auto; }
+  .mirror { position: absolute; inset: 0; color: transparent; pointer-events: none; overflow: hidden; }
+  .mirror mark { color: transparent; background: rgba(255,110,50,.30); border-bottom: 2px solid rgba(255,110,50,.9); border-radius: 3px; }
+  textarea { position: relative; resize: vertical; background: transparent; color: var(--ink); outline: none; }
+  textarea::placeholder { color: #66708a; }
+  .meta { display: flex; justify-content: space-between; margin: 8px 4px 0; color: var(--mut); font-size: 12.5px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 0; }
+  .chips b { width: 100%; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--mut); font-weight: 700; }
+  button.chip { cursor: pointer; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: rgba(255,255,255,.04); color: var(--ink); font: 600 12.5px -apple-system, "Segoe UI", sans-serif; }
+  button.chip:hover { background: rgba(255,255,255,.10); }
+  #host { position: sticky; top: 20px; }
+  .demo { display: none; margin: 14px 0 0; padding: 12px; border-radius: 12px; border: 1px dashed var(--line); font-size: 12.5px; color: var(--mut); }
+  .demo.on { display: block; } .demo input[type=range] { width: 100%; }
+  .foot { margin-top: 26px; color: var(--mut); font-size: 12.5px; }
+  .err { color: #ffb4a8; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Cringe Lab 🌡️</h1>
+  <p class="sub">Write a LinkedIn post or a tweet. A small language model judges it on every pause, on your own laptop. Nothing leaves this machine.</p>
+  <div class="grid">
+    <section>
+      <div class="editor">
+        <div class="mirror" id="mirror" aria-hidden="true"></div>
+        <textarea id="draft" spellcheck="false" placeholder="I'm humbled to announce…"></textarea>
+      </div>
+      <div class="meta"><span id="count">0 words</span><span id="net"></span></div>
+      <div class="chips" id="chips"><b>Try a draft</b></div>
+      <div class="demo" id="demo">
+        <b>Demo mode</b> (bypasses the model): heat <input id="heat" type="range" min="0" max="100" value="0"> <select id="arch"></select>
+      </div>
+      <p class="foot">Laya scores the opening of your post as one of eight archetypes, then the meter shows how far it is from “genuine”. Delete the highlighted sentence and watch it cool down.</p>
+    </section>
+    <aside><div id="host"></div></aside>
+  </div>
+</main>
+<script src="/meter.js"></script>
+<script>
+(() => {
+  const SAMPLES = {
+    "Humblebrag": "I'm humbled to announce that I've been named one of the Top 40 Under 40.\n\nI'm just a kid from a small town who loved spreadsheets. This wouldn't be possible without my incredible team.\n\nBlessed and grateful. 🙏",
+    "Fake parable": "I fired an intern for being 10 minutes late.\n\nHe looked at me and said nothing. Then he handed me his phone. On the screen was my own résumé.\n\nTurns out he was the founder of the company I'd been trying to join for years.\n\nBe kind. You never know who's standing in front of you.",
+    "Engagement bait": "Agree or disagree? 👇\n\nComment 'GUIDE' and I'll DM you my free template.\n\nLike, repost and tag someone who needs to see this.",
+    "Hustle guru": "Nobody is coming to save you.\n\nAt 5AM while you're sleeping, I'm already winning.\n\nDiscomfort is the price of admission for the life you want. Stay hungry. No days off.",
+    "Buzzword salad": "Excited to be leveraging holistic, best-in-class synergies to unlock scalable value across the digital transformation ecosystem.\n\nLet's circle back and ideate on next-gen paradigms.",
+    "AI thread bro": "10 AI tools that will replace your job (thread 🧵)\n\n1/ ChatGPT 2/ Claude 3/ Perplexity...\n\nMost people are using AI wrong. Bookmark this and follow for daily AI tips.",
+    "Shameless plug": "Only 5 spots left for my new course: The 10x Creator Blueprint! First 50 buyers get 40% off plus a bonus template pack.\n\nBook a call. Link in bio.",
+    "Actually useful": "We moved our billing jobs from cron to a proper queue last quarter. Failed invoices dropped from 4% to 0.3%.\n\nThe migration itself was boring, which is the point. The one gotcha: make retries idempotent, or you'll double-charge people.",
+  };
+  const $ = (id) => document.getElementById(id);
+  const meter = new CringeMeter($("host"), {});
+  const draft = $("draft"), mirror = $("mirror");
+  const qs = new URLSearchParams(location.search);
+  let seq = 0, timer = null, hotTimer = null, hotSentence = null, lastHeat = 0;
+
+  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  function paintMirror() {
+    const t = draft.value;
+    if (hotSentence && t.includes(hotSentence)) {
+      const i = t.indexOf(hotSentence);
+      mirror.innerHTML = esc(t.slice(0, i)) + "<mark>" + esc(hotSentence) + "</mark>" + esc(t.slice(i + hotSentence.length)) + "\n";
+    } else mirror.innerHTML = esc(t) + "\n";
+    mirror.scrollTop = draft.scrollTop;
+  }
+  async function post(path, text) {
+    const r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text }) });
+    if (!r.ok) throw new Error(path + " " + r.status);
+    return r.json();
+  }
+  async function score() {
+    const text = draft.value, my = ++seq;
+    const a = CringeMeter.assess(text);
+    if (!a.ok) { meter.setIdle(a.hint); hotSentence = null; paintMirror(); return; }
+    meter.setBusy(true);
+    try {
+      const r = await post("/score", text);
+      if (my !== seq) return;                       // a newer keystroke superseded this one
+      meter.setBusy(false); $("net").textContent = "";
+      if (r.probs) meter.setScores(r.probs, r.ms);
+      lastHeat = r.probs ? 1 - r.probs.genuine : 0;
+      clearTimeout(hotTimer);
+      hotSentence = null; meter.setHot(null); paintMirror();
+      if (lastHeat > 0.3) hotTimer = setTimeout(hot, 650);
+    } catch (e) {
+      meter.setBusy(false); $("net").innerHTML = '<span class="err">Server not reachable. Run start-server.cmd</span>';
+    }
+  }
+  async function hot() {
+    const text = draft.value, my = seq;
+    try {
+      const r = await post("/hot", text);
+      if (my !== seq || text !== draft.value) return;
+      hotSentence = r.sentence && r.heat > 0.4 ? r.sentence : null;
+      meter.setHot(hotSentence); paintMirror();
+    } catch (_) {}
+  }
+  draft.addEventListener("input", () => {
+    $("count").textContent = (draft.value.trim() ? draft.value.trim().split(/\s+/).length : 0) + " words";
+    hotSentence = null; meter.setHot(null); paintMirror();
+    clearTimeout(timer); timer = setTimeout(score, 220);
+  });
+  draft.addEventListener("scroll", () => { mirror.scrollTop = draft.scrollTop; });
+
+  for (const [name, text] of Object.entries(SAMPLES)) {
+    const b = document.createElement("button"); b.className = "chip"; b.textContent = name;
+    b.onclick = () => { draft.value = text; draft.dispatchEvent(new Event("input")); draft.focus(); };
+    $("chips").append(b);
+  }
+  const clear = document.createElement("button"); clear.className = "chip"; clear.textContent = "Clear";
+  clear.onclick = () => { draft.value = ""; draft.dispatchEvent(new Event("input")); meter.setIdle(); draft.focus(); };
+  $("chips").append(clear);
+
+  // demo mode: drive the meter by hand to see every state without the model (also handy for recording)
+  if (qs.has("demo")) {
+    $("demo").classList.add("on");
+    for (const l of CringeMeter.LABELS.filter((l) => l !== "genuine")) { const o = document.createElement("option"); o.value = l; o.textContent = CringeMeter.META[l].name; $("arch").append(o); }
+    const drive = () => {
+      const heat = +$("heat").value / 100, top = $("arch").value, probs = {};
+      for (const l of CringeMeter.LABELS) probs[l] = l === "genuine" ? 1 - heat : l === top ? heat * 0.8 : heat * 0.2 / 6;
+      meter.setScores(probs, 231); if (heat > 0.3) meter.setHot("I'm humbled to announce that I've been named one of the Top 40 Under 40."); else meter.setHot(null);
+    };
+    $("heat").oninput = drive; $("arch").onchange = drive;
+    window.__drive = (heat, top) => { $("heat").value = heat * 100; if (top) $("arch").value = top; drive(); };
+  }
+  window.__meter = meter;
+  paintMirror();
+})();
+</script>
+</body>
+</html>

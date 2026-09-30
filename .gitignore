@@ -1,0 +1,16 @@
+# environment, models, generated data: none of this is source
+.venv/
+out/
+data/
+__pycache__/
+*.pyc
+*.log
+*.pid
+install.log
+
+# personal drafts
+POST_DRAFT.md
+EXAMPLE_POSTS.md
+
+# stop-file used to end a training run early
+STOP

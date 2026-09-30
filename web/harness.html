@@ -1,0 +1,36 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Composer stand-in (test harness)</title>
+<style>
+  body { margin: 0; font: 15px -apple-system, "Segoe UI", sans-serif; background: #f3f2ef; color: #222; }
+  main { max-width: 640px; margin: 30px auto; padding: 0 16px; }
+  .card { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 18px; box-shadow: 0 0 0 1px rgba(0,0,0,.1); }
+  h3 { margin: 0 0 8px; font-size: 14px; color: #555; }
+  .ql-editor { min-height: 140px; outline: none; padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+  .draft { min-height: 90px; outline: none; padding: 8px; border: 1px solid #ddd; border-radius: 6px; }
+  input { width: 100%; padding: 8px; box-sizing: border-box; }
+  textarea { width: 100%; height: 80px; padding: 8px; box-sizing: border-box; }
+</style>
+<script>
+  // Stand-in for chrome.runtime.sendMessage: same message shapes as extension/background.js, same server.
+  window.chrome = { runtime: { lastError: null, sendMessage(msg, cb) {
+    const init = msg.type === "health" ? { method: "GET" } : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: msg.text }) };
+    fetch("/" + msg.type, init).then(async (r) => cb({ ok: r.ok, data: await r.json().catch(() => null) })).catch((e) => cb({ ok: false, error: String(e) }));
+  } } };
+</script></head>
+<body><main>
+  <div class="card"><h3>Search box (must be ignored: one line)</h3><input id="search" placeholder="Search"></div>
+  <div class="card"><h3>LinkedIn-style composer (Quill: div.ql-editor, contenteditable)</h3>
+    <div class="ql-editor" id="li" contenteditable="true" role="textbox" data-placeholder="What do you want to talk about?"></div></div>
+  <div class="card"><h3>X-style composer (DraftJS: data-testid=tweetTextarea_0)</h3>
+    <div class="draft" id="x" data-testid="tweetTextarea_0" contenteditable="true" role="textbox"></div></div>
+  <div class="card"><h3>LinkedIn 2026-style: the editor lives inside an OPEN SHADOW ROOT (div#interop-outlet), like the real post box</h3>
+    <div id="interop-outlet"></div></div>
+  <div class="card"><h3>Plain textarea</h3><textarea id="ta"></textarea></div>
+</main>
+<script>
+  const outlet = document.getElementById("interop-outlet").attachShadow({ mode: "open" });
+  outlet.innerHTML = '<style>.ql-editor{min-height:110px;outline:none;padding:8px;border:1px solid #ddd;border-radius:6px;font:15px sans-serif}</style>'
+    + '<div class="ql-editor" contenteditable="true" role="textbox" aria-label="Text editor for creating content"><p><br></p></div>';
+</script>
+<script src="/ext/meter.js"></script><script src="/ext/content.js"></script>
+</body></html>
