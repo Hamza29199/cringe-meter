@@ -5,7 +5,7 @@ Humblebrags and fake parables about wise Uber drivers make it heat up, and delet
 down again. A small model called [Laya](https://github.com/NandhaKishorM/laya) does the judging on your own machine, so
 the draft never goes anywhere.
 
-I built it to find out whether a small model could judge text fast enough to keep up with typing on a laptop CPU. Turns out after a bit of fine-tuning, it can do just that, at about a quarter of a second per check.
+I built it to find out whether a small model could judge text fast enough to keep up with typing on a standard laptop CPU. Turns out after a bit of fine-tuning, it can do just that, at about a quarter of a second per check (obvs even faster with a GPU).
 
 ![A humblebrag draft: 99% cringe, glass cracking, hottest line highlighted](docs/img/lab-humblebrag.jpg)
 
@@ -86,9 +86,6 @@ To end a training run early without losing the best epoch so far, create a file 
 Zero-shot Laya cannot do this task. On the test posts it scored 21% accuracy against 12.5% for chance, and its cringe
 score ranked genuine posts below cringe ones (AUC 0.40). Fine-tuning fixes that.
 
-Full fine-tuning was far too slow on a CPU, about a minute per batch of 8 on longer inputs. So the encoder stays frozen and
-runs once per post, with its output cached, and only Laya's 2-layer decision head trains. That takes minutes per epoch.
-
 The training data is synthetic. Each archetype has hand-written openers, middles and closers that get assembled into
 posts, and the same formatting and emoji are applied to every class, so line breaks and rocket emoji carry no label.
 Validation uses pieces that never appear in training.
@@ -97,7 +94,7 @@ On LinkedIn the post box is a modal `<dialog>` inside an open shadow root. The b
 and anything outside them cannot be clicked, so the extension puts the meter inside that dialog as a popover. It sits above
 the dark backdrop and still takes clicks. It also recovers on its own if the site removes the card or swaps the editor.
 
-A check takes about 250 ms on a laptop CPU. On GPU, it'd be about 30ms.
+(A check takes about 250 ms on a laptop CPU. On GPU, it'd be about 30ms.)
 
 ## How far to trust it
 
