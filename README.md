@@ -61,17 +61,25 @@ There are two front ends: the Cringe Lab, a local page at `http://127.0.0.1:8780
 and a Chrome extension that puts a floating meter on the post box at linkedin.com and x.com. Add `?demo=1` to the Lab
 address for a slider that drives the meter by hand, which is handy for screen recordings.
 
-But the model weights are not in this repository (the trained model is about 1.3 GB), so you train them yourself. You need Python 3.10 or newer, about 4 GB of free RAM and about 3 GB of disk, because Laya's checkpoints download from Hugging Face on first use (about 2.3 GB).
+The trained model is on Hugging Face at [Hamzonium/cringe-meter-v2](https://huggingface.co/Hamzonium/cringe-meter-v2)
+(1.3 GB), so you do not need to train anything. You need Python 3.10 or newer and about 4 GB of free RAM. Laya's base
+checkpoints also download from Hugging Face on first use (about 2.3 GB).
 
 ```bash
 python -m venv .venv
 .venv/Scripts/activate            # Windows; on macOS or Linux: source .venv/bin/activate
 pip install torch --index-url https://download.pytorch.org/whl/cpu
-pip install laya
+pip install laya huggingface_hub
 
+hf download Hamzonium/cringe-meter-v2 --local-dir out/cringe_v2
+python server.py                  # Windows: start-server.cmd
+```
+
+To train your own instead (no GPU needed, 2-3 hours on an 8-core CPU), generate the data and train:
+
+```bash
 python gen_synthetic.py --v2                                        # writes data/synth_v2.jsonl, about 6,200 posts
-python train.py out/cringe_v2 --synth data/synth_v2.jsonl           # 2-3 hours on an 8-core CPU
-python server.py                                                    # Windows: start-server.cmd
+python train.py out/cringe_v2 --synth data/synth_v2.jsonl
 ```
 
 The server prints its address once the model has loaded, which can take up to a minute. For the extension, open
