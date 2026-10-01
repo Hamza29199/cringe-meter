@@ -5,8 +5,7 @@ Humblebrags and fake parables about wise Uber drivers make it heat up, and delet
 down again. A small model called [Laya](https://github.com/NandhaKishorM/laya) does the judging on your own machine, so
 the draft never goes anywhere.
 
-I built it to find out whether a small model could judge text fast enough to keep up with typing on a laptop CPU. After
-fine-tuning it can, at about a quarter of a second per check.
+I built it to find out whether a small model could judge text fast enough to keep up with typing on a laptop CPU. Turns out after a bit of fine-tuning, it can do just that, at about a quarter of a second per check.
 
 ![A humblebrag draft: 99% cringe, glass cracking, hottest line highlighted](docs/img/lab-humblebrag.jpg)
 
@@ -62,9 +61,7 @@ There are two front ends: the Cringe Lab, a local page at `http://127.0.0.1:8780
 and a Chrome extension that puts a floating meter on the post box at linkedin.com and x.com. Add `?demo=1` to the Lab
 address for a slider that drives the meter by hand, which is handy for screen recordings.
 
-But the model weights are not in this repository (the trained model is about 1.3 GB), so you train them yourself. That
-needs no GPU. You need Python 3.10 or newer, about 4 GB of free RAM and about 3 GB of disk, because Laya's checkpoints
-download from Hugging Face on first use (about 2.3 GB).
+But the model weights are not in this repository (the trained model is about 1.3 GB), so you train them yourself. You need Python 3.10 or newer, about 4 GB of free RAM and about 3 GB of disk, because Laya's checkpoints download from Hugging Face on first use (about 2.3 GB).
 
 ```bash
 python -m venv .venv
@@ -100,7 +97,7 @@ On LinkedIn the post box is a modal `<dialog>` inside an open shadow root. The b
 and anything outside them cannot be clicked, so the extension puts the meter inside that dialog as a popover. It sits above
 the dark backdrop and still takes clicks. It also recovers on its own if the site removes the card or swaps the editor.
 
-A check takes about 250 ms on a laptop CPU. Laya's README quotes about 33 ms, which is a GPU figure.
+A check takes about 250 ms on a laptop CPU. On GPU, it'd be about 30ms.
 
 ## How far to trust it
 
@@ -147,8 +144,7 @@ If the card says it is waiting for the local server, start `server.py`.
 
 I have only tried it on Chrome and Windows 11. LinkedIn and X change their pages. The extension attaches to any large
 editable box on those two sites, so it does not depend on their exact markup, though that guarantees nothing. It judges
-style and says nothing about whether an idea is good or true. It works in English only, and the eight archetypes are a
-joke taxonomy.
+style and says nothing about whether an idea is good or true. It works in English only, and the eight archetypes are just a bit of fun for me.
 
 ## Credits and license
 
