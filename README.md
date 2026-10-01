@@ -75,7 +75,7 @@ hf download Hamzonium/cringe-meter-v2 --local-dir out/cringe_v2
 python server.py                  # Windows: start-server.cmd
 ```
 
-To train your own instead (no GPU needed, 2-3 hours on an 8-core CPU), generate the data and train:
+To train your own instead, generate the data and train:
 
 ```bash
 python gen_synthetic.py --v2                                        # writes data/synth_v2.jsonl, about 6,200 posts
@@ -102,7 +102,7 @@ On LinkedIn the post box is a modal `<dialog>` inside an open shadow root. The b
 and anything outside them cannot be clicked, so the extension puts the meter inside that dialog as a popover. It sits above
 the dark backdrop and still takes clicks. It also recovers on its own if the site removes the card or swaps the editor.
 
-(A check takes about 250 ms on a laptop CPU. On GPU, it'd be about 30ms.)
+(A check takes about 250 ms on a laptop CPU and ~30ms on GPU.)
 
 ## How far to trust it
 
